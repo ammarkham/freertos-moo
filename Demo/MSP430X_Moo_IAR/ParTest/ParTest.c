@@ -73,7 +73,7 @@
 /*
  * Toggle the single genuine built in LED.
  */
-static void prvToggleOnBoardLED( void );
+//static void prvToggleOnBoardLED( void );
 /*-----------------------------------------------------------*/
 
 void vParTestInitialise( void )

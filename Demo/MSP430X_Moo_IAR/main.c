@@ -71,7 +71,7 @@ static void prvToggleOnBoardLED( void );
 static void prvBeep( void );
 
 static void prvBeep (void) {
-#define COUNTERLEN 500 // ~440 Hz
+#define COUNTERLEN 200//500 // ~440 Hz
 #define NUMCYCLES 250
 #define P36 0x40 // 0b01000000, pin 3.6
     unsigned i, cyc;
@@ -84,7 +84,7 @@ static void prvBeep (void) {
         do { --i; } while (i != 0);
     }
 
-    printf("Beep\n");                       // SW Delay
+    printf("Beep\n");                       // /Delay
 
 }
 
@@ -106,7 +106,20 @@ static void prvToggleOnBoardLED( void )
         sState = !sState;
   */
     
-    P4OUT ^= 0x04;
+    //P4OUT ^= 0x04;
+    
+    #define LCOUNTERLEN 500 // ~440 Hz
+    #define LNUMCYCLES 600
+    //#define P36 0x40 // 0b01000000, pin 3.6
+    unsigned i, cyc;
+
+    P4DIR |= 0x04; //
+
+    for (cyc = 0; cyc != LNUMCYCLES; ++cyc) {
+        P4OUT ^= 0x04;
+        i = LCOUNTERLEN;
+        do { --i; } while (i != 0);
+    }
   
     printf("Blink\n");                       // Delay
     
@@ -133,21 +146,13 @@ static void prvSetupHardware( void )
 
 	/* (121+1) x 32768 x 2 = 7.99 Mhz */
 	//SCFQCTL = mainMAX_FREQUENCY;
-
-	/* Setup the IO.  This is just copied from the demo supplied by SoftBaugh
-	 for the ES449 demo board. */
-	//P1SEL = 0x32;
-	P2SEL = 0x00;
-	P3SEL = 0x00;
-	P4SEL = 0xFC;
-	P5SEL = 0xFF;
 }
 
 int main( void )
     {
       
         /* Setup the microcontroller hardware for the demo. */
-        //prvSetupHardware(); ---> this for some reason bloks the LED task but not other tasks
+        prvSetupHardware(); 
 	vParTestInitialise();
 
         /* Start the standard demo application tasks. */
